@@ -34,6 +34,7 @@ class MainFragment : Fragment(), MenuProvider, RestaurantsAdapter.OnItemClickLis
     private lateinit var binding: FragmentMainBinding
     private val viewModel: MainActivityViewModel by activityViewModels()
 
+    private lateinit var filterDialog: FilterDialogFragment
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
     ) { result -> this.onSignInResult(result) }
@@ -51,6 +52,9 @@ class MainFragment : Fragment(), MenuProvider, RestaurantsAdapter.OnItemClickLis
 
         val adapter = RestaurantsAdapter(listener = this)
         binding.recyclerRestaurants.adapter = adapter
+        filterDialog = FilterDialogFragment()
+        binding.filterBar.setOnClickListener { onFilterClicked() }
+        binding.buttonClearFilter.setOnClickListener { onClearFilterClicked() }
 
         val menuHost = requireActivity()
         menuHost.addMenuProvider(
@@ -158,6 +162,16 @@ class MainFragment : Fragment(), MenuProvider, RestaurantsAdapter.OnItemClickLis
             .setNegativeButton(R.string.option_exit) { _, _ -> requireActivity().finish() }.create()
 
         dialog.show()
+    }
+
+    private fun onFilterClicked() {
+        filterDialog.show(parentFragmentManager, FilterDialogFragment::class.java.simpleName)
+    }
+
+    private fun onClearFilterClicked() {
+        filterDialog.resetFilters()
+
+        // TODO onFilter(Filters.default)
     }
 
     private fun displayEmptyState(shouldShow: Boolean) = with(binding) {

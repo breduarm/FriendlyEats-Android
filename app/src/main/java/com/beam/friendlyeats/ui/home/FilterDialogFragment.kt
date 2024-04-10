@@ -150,9 +150,4 @@ class FilterDialogFragment : DialogFragment() {
             it.spinnerSort.setSelection(0)
         }
     }
-
-    companion object {
-
-        const val TAG = "FilterDialog"
-    }
 }
