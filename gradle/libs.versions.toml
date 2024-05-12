@@ -21,7 +21,7 @@ firebase = "33.8.0"
 firebaseUIAuth = "8.0.2"
 
 # Couchbase
-couchbaseLite = "3.1.0"
+couchbaseLite = "3.2.2"
 
 # Google Services
 googleServices = "4.4.2"

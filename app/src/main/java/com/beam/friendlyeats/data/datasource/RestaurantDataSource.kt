@@ -1,5 +1,6 @@
 package com.beam.friendlyeats.data.datasource
 
+import com.beam.friendlyeats.data.local.couchbase.dao.RestaurantDaoCouchbaseImpl
 import com.beam.friendlyeats.data.local.firestore.collections.RestaurantCollection
 import com.beam.friendlyeats.data.local.firestore.dao.RestaurantDaoFirebaseImpl
 import com.beam.friendlyeats.data.local.firestore.mappers.toDomain
@@ -24,6 +25,7 @@ interface RestaurantDataSource {
 class RestaurantLocalDataSource : RestaurantDataSource {
 
     private val restaurantDao = RestaurantDaoFirebaseImpl()
+    private val restaurantCouchbaseDao = RestaurantDaoCouchbaseImpl()
 
     override fun getById(restaurantId: String): Flow<Restaurant> =
         restaurantDao.getById(restaurantId).mapNotNull { it?.toDomain() }
