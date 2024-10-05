@@ -1,4 +1,4 @@
-package com.beam.friendlyeats.ui
+package com.beam.friendlyeats.ui.home
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
