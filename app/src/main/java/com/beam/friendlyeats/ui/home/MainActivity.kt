@@ -5,6 +5,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.Navigation
 import com.beam.friendlyeats.R
 
 class MainActivity : AppCompatActivity() {
@@ -18,5 +19,8 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // Set up Navigation
+        Navigation.findNavController(this, R.id.nav_host_fragment)
     }
 }
