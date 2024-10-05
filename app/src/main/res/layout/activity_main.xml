@@ -22,7 +22,7 @@
         app:title="@string/app_name"
         app:titleMarginStart="24dp"
         app:titleTextColor="@android:color/white" />
-s
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
