@@ -21,6 +21,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Set up Navigation
-        Navigation.findNavController(this, R.id.nav_host_fragment)
+        supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
     }
 }
