@@ -21,4 +21,20 @@ class MainFragment : Fragment() {
         binding = FragmentMainBinding.inflate(inflater, container, false);
         return binding.root;
     }
+
+    override fun onStart() {
+        super.onStart()
+
+        // Start sign in if necessary
+        if (shouldStartSignIn()) {
+            startSignIn()
+            return
+        }
+    }
+
+    private fun startSignIn() {
+        // TODO Start sign with firebase in when user is not signed in
+    }
+
+    private fun shouldStartSignIn(): Boolean = !viewModel.isSigningIn
 }
