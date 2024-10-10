@@ -61,4 +61,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebaseui.fiebase.ui.auth)
+
+    // Material Rating Bar
+    implementation(libs.materialratingbar)
 }

@@ -20,6 +20,9 @@ firebaseUIAuth = "8.0.2"
 # Google Services
 googleServices = "4.4.2"
 
+# Material Rating Bar
+materialratingbar = "1.4.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -39,10 +42,12 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx" }
 firebaseui-fiebase-ui-auth = { group = "com.firebaseui", name = "firebase-ui-auth", version.ref = "firebaseUIAuth" }
 
+# Material Rating Bar
+materialratingbar = { group = "me.zhanghai.android.materialratingbar", name = "library", version.ref = "materialratingbar" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
 # Google Services
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
-
