@@ -43,10 +43,14 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val adapter = RestaurantsAdapter()
+        binding.recyclerRestaurants.adapter = adapter
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
                     displayEmptyState(shouldShow = state.restaurants.isEmpty())
+                    adapter.submitList(state.restaurants)
                 }
             }
         }

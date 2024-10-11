@@ -20,7 +20,7 @@ class MainActivityViewModel : ViewModel() {
     fun onUiReady() {
         viewModelScope.launch {
             val restaurants = findAllRestaurants()
-            println("==== Restaurants: $restaurants")
+            _state.value = _state.value.copy(restaurants = restaurants)
         }
     }
 
