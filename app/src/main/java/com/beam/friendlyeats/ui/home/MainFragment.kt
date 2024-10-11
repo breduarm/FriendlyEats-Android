@@ -7,8 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.beam.friendlyeats.R
 import com.beam.friendlyeats.databinding.FragmentMainBinding
 import com.firebase.ui.auth.AuthUI
@@ -17,6 +21,7 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 
 class MainFragment : Fragment() {
 
@@ -37,6 +42,16 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { state ->
+                    displayEmptyState(shouldShow = state.restaurants.isEmpty())
+                }
+            }
+        }
+
+        viewModel.onUiReady()
     }
 
     override fun onStart() {
@@ -93,5 +108,10 @@ class MainFragment : Fragment() {
             .setNegativeButton(R.string.option_exit) { _, _ -> requireActivity().finish() }.create()
 
         dialog.show()
+    }
+
+    private fun displayEmptyState(shouldShow: Boolean) = with(binding) {
+        recyclerRestaurants.isVisible = !shouldShow
+        viewEmpty.isVisible = shouldShow
     }
 }
