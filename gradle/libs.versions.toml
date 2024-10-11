@@ -41,6 +41,7 @@ androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx" }
 firebaseui-fiebase-ui-auth = { group = "com.firebaseui", name = "firebase-ui-auth", version.ref = "firebaseUIAuth" }
+firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx" }
 
 # Material Rating Bar
 materialratingbar = { group = "me.zhanghai.android.materialratingbar", name = "library", version.ref = "materialratingbar" }
