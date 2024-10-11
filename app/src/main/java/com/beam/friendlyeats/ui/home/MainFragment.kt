@@ -15,6 +15,8 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class MainFragment : Fragment() {
 
@@ -47,7 +49,8 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun shouldStartSignIn(): Boolean = !viewModel.isSigningIn
+    private fun shouldStartSignIn(): Boolean =
+        !viewModel.isSigningIn && Firebase.auth.currentUser == null
 
     private fun startSignIn() {
         val intent = AuthUI.getInstance().createSignInIntentBuilder()
