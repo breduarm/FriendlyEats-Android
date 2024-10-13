@@ -19,12 +19,11 @@ class MainActivityViewModel : ViewModel() {
 
     fun onUiReady() {
         viewModelScope.launch {
-            val restaurants = findAllRestaurants()
-            _state.value = _state.value.copy(restaurants = restaurants)
+            restaurantRepository.observeAllRestaurants().collect { restaurants ->
+                _state.value = _state.value.copy(restaurants = restaurants)
+            }
         }
     }
-
-    private suspend fun findAllRestaurants() = restaurantRepository.findAllRestaurants()
 
     data class UiState(
         val restaurants: List<Restaurant> = emptyList(),
