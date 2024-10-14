@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.beam.friendlyeats.data.repositories.RestaurantRepository
 import com.beam.friendlyeats.domain.models.Restaurant
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 class MainActivityViewModel : ViewModel() {
@@ -19,9 +21,12 @@ class MainActivityViewModel : ViewModel() {
 
     fun onUiReady() {
         viewModelScope.launch {
-            restaurantRepository.observeAllRestaurants().collect { restaurants ->
-                _state.value = _state.value.copy(restaurants = restaurants)
-            }
+            restaurantRepository
+                .observeAllRestaurants()
+                .flowOn(Dispatchers.IO)
+                .collect { restaurants ->
+                    _state.value = _state.value.copy(restaurants = restaurants)
+                }
         }
     }
 
