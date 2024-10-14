@@ -11,7 +11,7 @@ interface RestaurantDataSource {
     fun findAllRestaurantsFlow(): Flow<List<Restaurant>>
 }
 
-class RestaurantDataSourceLocalDataSource : RestaurantDataSource {
+class RestaurantLocalDataSource : RestaurantDataSource {
 
     private val restaurantDao = RestaurantDaoFirebaseImpl()
 
