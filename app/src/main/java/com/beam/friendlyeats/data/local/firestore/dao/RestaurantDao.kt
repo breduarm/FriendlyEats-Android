@@ -4,6 +4,7 @@ import android.util.Log
 import com.beam.friendlyeats.data.local.firestore.collections.RestaurantCollection
 import com.beam.friendlyeats.data.local.firestore.mappers.toDomain
 import com.beam.friendlyeats.domain.models.Restaurant
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.firestoreSettings
@@ -18,6 +19,8 @@ import kotlinx.coroutines.tasks.await
 interface RestaurantDao {
 
     suspend fun findAllRestaurants(): List<Restaurant>
+
+    suspend fun findRestaurantsByIds(ids: List<String>): List<Restaurant>
 
     fun findAllRestaurantsFlow(): Flow<List<Restaurant>>
 }
@@ -42,6 +45,14 @@ class RestaurantDaoFirebaseImpl : RestaurantDao {
         .await()
         .toObjects(RestaurantCollection::class.java)
         .map { it.toDomain() }
+
+    override suspend fun findRestaurantsByIds(ids: List<String>): List<Restaurant> =
+        collection
+            .whereIn(FieldPath.documentId(), ids)
+            .get(Source.CACHE)
+            .await()
+            .toObjects(RestaurantCollection::class.java)
+            .map { it.toDomain() }
 
     override fun findAllRestaurantsFlow(): Flow<List<Restaurant>> = callbackFlow {
         val listener = collection.addSnapshotListener { snapshot, error ->

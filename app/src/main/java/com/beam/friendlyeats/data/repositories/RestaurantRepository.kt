@@ -8,15 +8,17 @@ import kotlinx.coroutines.flow.map
 
 class RestaurantRepository {
 
-    private val dataSource = RestaurantLocalDataSource()
+    private val restaurantsDataSource = RestaurantLocalDataSource()
     private val restaurantsGroupDataSource = RestaurantsGroupLocalDataSource()
 
-    suspend fun getAllRestaurants(): List<Restaurant> = dataSource.findAllRestaurants()
+    suspend fun getAllRestaurants(): List<Restaurant> = restaurantsDataSource.findAllRestaurants()
 
-    fun observeAllRestaurants(): Flow<List<Restaurant>> = dataSource.findAllRestaurantsFlow()
+    fun observeAllRestaurants(): Flow<List<Restaurant>> = restaurantsDataSource.findAllRestaurantsFlow()
 
     fun observeAllRestaurantsInRestaurantsGroup(): Flow<List<Restaurant>> =
-        restaurantsGroupDataSource.findAllRestaurantsGroupFlow().map {
-            it.flatMap { group -> group.restaurants }
+        restaurantsGroupDataSource.findAllRestaurantsGroupFlow().map { groups ->
+            val firstGroup = groups.firstOrNull()
+            val restaurantsIds = firstGroup?.restaurantsIds.orEmpty()
+            restaurantsDataSource.findRestaurantsByIds(restaurantsIds)
         }
 }

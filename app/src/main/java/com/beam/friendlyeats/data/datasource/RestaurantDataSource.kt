@@ -8,6 +8,8 @@ interface RestaurantDataSource {
 
     suspend fun findAllRestaurants(): List<Restaurant>
 
+    suspend fun findRestaurantsByIds(ids: List<String>): List<Restaurant>
+
     fun findAllRestaurantsFlow(): Flow<List<Restaurant>>
 }
 
@@ -16,6 +18,9 @@ class RestaurantLocalDataSource : RestaurantDataSource {
     private val restaurantDao = RestaurantDaoFirebaseImpl()
 
     override suspend fun findAllRestaurants(): List<Restaurant> = restaurantDao.findAllRestaurants()
+
+    override suspend fun findRestaurantsByIds(ids: List<String>): List<Restaurant> =
+        restaurantDao.findRestaurantsByIds(ids)
 
     override fun findAllRestaurantsFlow(): Flow<List<Restaurant>> =
         restaurantDao.findAllRestaurantsFlow()

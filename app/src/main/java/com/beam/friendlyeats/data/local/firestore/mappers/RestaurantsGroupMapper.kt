@@ -5,5 +5,6 @@ import com.beam.friendlyeats.domain.models.RestaurantsGroup
 
 fun RestaurantsGroupCollection.toDomain() = RestaurantsGroup(
     groupName = groupName.orEmpty(),
-    restaurants = emptyList() // restaurants.map { it.toDomain() },
+    restaurantsIds = restaurants.orEmpty(),
+    restaurants = emptyList(),
 )
