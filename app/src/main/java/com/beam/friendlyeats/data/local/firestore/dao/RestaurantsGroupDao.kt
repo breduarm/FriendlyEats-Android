@@ -37,6 +37,7 @@ class RestaurantsGroupDaoFirebaseImpl : RestaurantsGroupDao {
         val listener = collection.addSnapshotListener { snapshot, error ->
             if (error != null) {
                 Log.w(RestaurantsGroupDaoFirebaseImpl::class.java.simpleName, "Listen failed.", error)
+                close(error)
                 return@addSnapshotListener
             }
             val result = snapshot?.toObjects(RestaurantsGroupCollection::class.java)?.map {
