@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.beam.friendlyeats.R
 import com.beam.friendlyeats.databinding.ItemRestaurantBinding
 import com.beam.friendlyeats.domain.models.Restaurant
+import com.bumptech.glide.Glide
 
 class RestaurantsAdapter : ListAdapter<Restaurant, RestaurantsViewHolder>(RestaurantsDiffCallback) {
 
@@ -32,6 +33,10 @@ class RestaurantsViewHolder(view: View) : ViewHolder(view) {
         restaurantItemCategory.text = restaurant.category
         restaurantItemPrice.text = restaurant.getPriceString()
         restaurantItemRating.rating = restaurant.avgRating.toFloat()
+
+        Glide.with(restaurantItemImage.context)
+            .load(restaurant.photo)
+            .into(restaurantItemImage)
     }
 }
 
