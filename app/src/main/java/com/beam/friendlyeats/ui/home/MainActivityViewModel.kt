@@ -22,7 +22,7 @@ class MainActivityViewModel : ViewModel() {
     fun onUiReady() {
         viewModelScope.launch {
             restaurantRepository
-                .observeAllRestaurantsInRestaurantsGroup()
+                .observeAllRestaurants()
                 .flowOn(Dispatchers.IO)
                 .collect { restaurants ->
                     _state.value = _state.value.copy(restaurants = restaurants)
