@@ -30,7 +30,7 @@ class RestaurantsViewHolder(view: View) : ViewHolder(view) {
         restaurantItemName.text = restaurant.name
         restaurantItemCity.text = restaurant.city
         restaurantItemCategory.text = restaurant.category
-        restaurantItemPrice.text = restaurant.price.toString()
+        restaurantItemPrice.text = restaurant.getPriceString()
         restaurantItemRating.rating = restaurant.avgRating.toFloat()
     }
 }
