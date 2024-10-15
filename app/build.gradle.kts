@@ -65,4 +65,7 @@ dependencies {
 
     // Material Rating Bar
     implementation(libs.materialratingbar)
+
+    // Media Management
+    implementation(libs.glide)
 }

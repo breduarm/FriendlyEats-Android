@@ -23,6 +23,9 @@ googleServices = "4.4.2"
 # Material Rating Bar
 materialratingbar = "1.4.0"
 
+# Media Management
+glide = "4.16.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -45,6 +48,9 @@ firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-fires
 
 # Material Rating Bar
 materialratingbar = { group = "me.zhanghai.android.materialratingbar", name = "library", version.ref = "materialratingbar" }
+
+# Media Management
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
