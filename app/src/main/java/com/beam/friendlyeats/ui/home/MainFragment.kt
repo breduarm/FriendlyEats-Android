@@ -91,7 +91,7 @@ class MainFragment : Fragment(), MenuProvider {
         }
 
         R.id.menu_add_items -> {
-            TODO("Add random items not yet implemented")
+            viewModel.onAddRandomItems()
             true
         }
 

@@ -23,6 +23,8 @@ interface RestaurantDao {
     suspend fun findRestaurantsByIds(ids: List<String>): List<Restaurant>
 
     fun findAllRestaurantsFlow(): Flow<List<Restaurant>>
+
+    fun addRandomRestaurants()
 }
 
 class RestaurantDaoFirebaseImpl : RestaurantDao {
@@ -68,5 +70,13 @@ class RestaurantDaoFirebaseImpl : RestaurantDao {
         }
 
         awaitClose { listener.remove() }
+    }
+
+    override fun addRandomRestaurants() {
+        TODO("Not yet implemented")
+    }
+
+    companion object {
+        const val RANDOM_RESTAURANTS_LIMIT = 3
     }
 }

@@ -36,6 +36,10 @@ class MainActivityViewModel : ViewModel() {
         AuthUI.getInstance().signOut(context)
     }
 
+    fun onAddRandomItems() {
+        restaurantRepository.addRandomRestaurants()
+    }
+
     data class UiState(
         val restaurants: List<Restaurant> = emptyList(),
     )
