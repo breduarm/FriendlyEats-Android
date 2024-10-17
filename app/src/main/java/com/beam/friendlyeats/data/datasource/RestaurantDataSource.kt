@@ -1,5 +1,6 @@
 package com.beam.friendlyeats.data.datasource
 
+import com.beam.friendlyeats.data.local.firestore.collections.RestaurantCollection
 import com.beam.friendlyeats.data.local.firestore.dao.RestaurantDaoFirebaseImpl
 import com.beam.friendlyeats.domain.models.Restaurant
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +13,7 @@ interface RestaurantDataSource {
 
     fun findAllRestaurantsFlow(): Flow<List<Restaurant>>
 
-    fun addRandomRestaurants(cities: Array<String>, categories: Array<String>)
+    fun addRandomRestaurants(newRestaurants: List<RestaurantCollection>)
 }
 
 class RestaurantLocalDataSource : RestaurantDataSource {
@@ -27,7 +28,7 @@ class RestaurantLocalDataSource : RestaurantDataSource {
     override fun findAllRestaurantsFlow(): Flow<List<Restaurant>> =
         restaurantDao.findAllRestaurantsFlow()
 
-    override fun addRandomRestaurants(cities: Array<String>, categories: Array<String>) {
-        restaurantDao.addRandomRestaurants(cities, categories)
+    override fun addRandomRestaurants(newRestaurants: List<RestaurantCollection>) {
+        restaurantDao.addRandomRestaurants(newRestaurants)
     }
 }

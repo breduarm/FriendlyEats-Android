@@ -24,7 +24,7 @@ interface RestaurantDao {
 
     fun findAllRestaurantsFlow(): Flow<List<Restaurant>>
 
-    fun addRandomRestaurants(cities: Array<String>, categories: Array<String>)
+    fun addRandomRestaurants(newRestaurants: List<RestaurantCollection>)
 }
 
 class RestaurantDaoFirebaseImpl : RestaurantDao {
@@ -72,17 +72,7 @@ class RestaurantDaoFirebaseImpl : RestaurantDao {
         awaitClose { listener.remove() }
     }
 
-    override fun addRandomRestaurants(cities: Array<String>, categories: Array<String>) {
-        for (i in 0..RANDOM_RESTAURANTS_LIMIT) {
-            // Create random restaurant / ratings
-            val randomRestaurant = RestaurantCollection.getRandom(cities, categories)
-
-            // Add restaurant
-            collection.add(randomRestaurant)
-        }
-    }
-
-    companion object {
-        const val RANDOM_RESTAURANTS_LIMIT = 3
+    override fun addRandomRestaurants(newRestaurants: List<RestaurantCollection>) {
+        collection.add(newRestaurants)
     }
 }
