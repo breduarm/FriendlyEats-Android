@@ -1,9 +1,11 @@
 package com.beam.friendlyeats.ui.home
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.beam.friendlyeats.data.repositories.RestaurantRepository
 import com.beam.friendlyeats.domain.models.Restaurant
+import com.firebase.ui.auth.AuthUI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,6 +30,10 @@ class MainActivityViewModel : ViewModel() {
                     _state.value = _state.value.copy(restaurants = restaurants)
                 }
         }
+    }
+
+    fun onSignOut(context: Context) {
+        AuthUI.getInstance().signOut(context)
     }
 
     data class UiState(

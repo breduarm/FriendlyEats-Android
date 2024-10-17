@@ -85,7 +85,8 @@ class MainFragment : Fragment(), MenuProvider {
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean = when (menuItem.itemId) {
         R.id.menu_sign_out -> {
-            TODO("Logout not yet implemented")
+            viewModel.onSignOut(requireContext())
+            startSignIn()
             true
         }
 
