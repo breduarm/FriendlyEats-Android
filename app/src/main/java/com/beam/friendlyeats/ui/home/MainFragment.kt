@@ -91,7 +91,9 @@ class MainFragment : Fragment(), MenuProvider {
         }
 
         R.id.menu_add_items -> {
-            viewModel.onAddRandomItems()
+            val cities = resources.getStringArray(R.array.cities)
+            val categories = resources.getStringArray(R.array.categories)
+            viewModel.onAddRandomItems(cities, categories)
             true
         }
 

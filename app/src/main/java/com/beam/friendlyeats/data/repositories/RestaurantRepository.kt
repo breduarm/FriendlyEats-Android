@@ -16,7 +16,7 @@ class RestaurantRepository {
     fun observeAllRestaurants(): Flow<List<Restaurant>> =
         restaurantsDataSource.findAllRestaurantsFlow()
 
-    fun addRandomRestaurants() {
-        restaurantsDataSource.addRandomRestaurants()
+    fun addRandomRestaurants(cities: Array<String>, categories: Array<String>) {
+        restaurantsDataSource.addRandomRestaurants(cities, categories)
     }
 }

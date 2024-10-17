@@ -12,7 +12,7 @@ interface RestaurantDataSource {
 
     fun findAllRestaurantsFlow(): Flow<List<Restaurant>>
 
-    fun addRandomRestaurants()
+    fun addRandomRestaurants(cities: Array<String>, categories: Array<String>)
 }
 
 class RestaurantLocalDataSource : RestaurantDataSource {
@@ -27,7 +27,7 @@ class RestaurantLocalDataSource : RestaurantDataSource {
     override fun findAllRestaurantsFlow(): Flow<List<Restaurant>> =
         restaurantDao.findAllRestaurantsFlow()
 
-    override fun addRandomRestaurants() {
-        restaurantDao.addRandomRestaurants()
+    override fun addRandomRestaurants(cities: Array<String>, categories: Array<String>) {
+        restaurantDao.addRandomRestaurants(cities, categories)
     }
 }

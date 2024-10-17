@@ -36,8 +36,8 @@ class MainActivityViewModel : ViewModel() {
         AuthUI.getInstance().signOut(context)
     }
 
-    fun onAddRandomItems() {
-        restaurantRepository.addRandomRestaurants()
+    fun onAddRandomItems(cities: Array<String>, categories: Array<String>) {
+        restaurantRepository.addRandomRestaurants(cities, categories)
     }
 
     data class UiState(
