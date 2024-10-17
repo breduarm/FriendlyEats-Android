@@ -73,6 +73,8 @@ class RestaurantDaoFirebaseImpl : RestaurantDao {
     }
 
     override fun addRandomRestaurants(newRestaurants: List<RestaurantCollection>) {
-        collection.add(newRestaurants)
+        newRestaurants.forEach { newRestaurant ->
+            collection.add(newRestaurant)
+        }
     }
 }
