@@ -3,10 +3,14 @@ package com.beam.friendlyeats.ui.home
 import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -23,7 +27,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), MenuProvider {
 
     private lateinit var binding: FragmentMainBinding
     private val viewModel: MainActivityViewModel by activityViewModels()
@@ -46,6 +50,13 @@ class MainFragment : Fragment() {
         val adapter = RestaurantsAdapter()
         binding.recyclerRestaurants.adapter = adapter
 
+        val menuHost = requireActivity()
+        menuHost.addMenuProvider(
+            provider = this,
+            owner = viewLifecycleOwner,
+            state = Lifecycle.State.RESUMED
+        )
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
@@ -66,6 +77,24 @@ class MainFragment : Fragment() {
             startSignIn()
             return
         }
+    }
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.menu_main, menu)
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean = when (menuItem.itemId) {
+        R.id.menu_sign_out -> {
+            TODO("Logout not yet implemented")
+            true
+        }
+
+        R.id.menu_add_items -> {
+            TODO("Add random items not yet implemented")
+            true
+        }
+
+        else -> false
     }
 
     private fun shouldStartSignIn(): Boolean =
