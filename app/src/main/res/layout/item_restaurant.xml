@@ -20,7 +20,7 @@
 
     <TextView
         android:id="@+id/restaurant_item_name"
-        style="@style/AppTheme.Subheader"
+        style="@style/AppTheme.SubHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
