@@ -11,7 +11,13 @@ import com.beam.friendlyeats.databinding.ItemRestaurantBinding
 import com.beam.friendlyeats.domain.models.Restaurant
 import com.bumptech.glide.Glide
 
-class RestaurantsAdapter : ListAdapter<Restaurant, RestaurantsViewHolder>(RestaurantsDiffCallback) {
+class RestaurantsAdapter(
+    private val listener: OnItemClickListener
+) : ListAdapter<Restaurant, RestaurantsViewHolder>(RestaurantsDiffCallback) {
+
+    interface OnItemClickListener {
+        fun onItemClick(restaurant: Restaurant)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantsViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_restaurant, parent, false)
@@ -19,7 +25,7 @@ class RestaurantsAdapter : ListAdapter<Restaurant, RestaurantsViewHolder>(Restau
     }
 
     override fun onBindViewHolder(holder: RestaurantsViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), listener)
     }
 }
 
@@ -27,7 +33,14 @@ class RestaurantsViewHolder(view: View) : ViewHolder(view) {
 
     private val binding = ItemRestaurantBinding.bind(view)
 
-    fun bind(restaurant: Restaurant): Unit = with(binding) {
+    fun bind(
+        restaurant: Restaurant,
+        listener: RestaurantsAdapter.OnItemClickListener
+    ): Unit = with(binding) {
+        root.setOnClickListener {
+            listener.onItemClick(restaurant)
+        }
+
         restaurantItemName.text = restaurant.name
         restaurantItemCity.text = restaurant.city
         restaurantItemCategory.text = restaurant.category

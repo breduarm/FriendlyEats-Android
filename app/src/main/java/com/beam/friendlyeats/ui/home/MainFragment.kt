@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.beam.friendlyeats.R
 import com.beam.friendlyeats.databinding.FragmentMainBinding
+import com.beam.friendlyeats.domain.models.Restaurant
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
@@ -27,7 +28,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
-class MainFragment : Fragment(), MenuProvider {
+class MainFragment : Fragment(), MenuProvider, RestaurantsAdapter.OnItemClickListener {
 
     private lateinit var binding: FragmentMainBinding
     private val viewModel: MainActivityViewModel by activityViewModels()
@@ -47,7 +48,7 @@ class MainFragment : Fragment(), MenuProvider {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = RestaurantsAdapter()
+        val adapter = RestaurantsAdapter(listener = this)
         binding.recyclerRestaurants.adapter = adapter
 
         val menuHost = requireActivity()
@@ -98,6 +99,10 @@ class MainFragment : Fragment(), MenuProvider {
         }
 
         else -> false
+    }
+
+    override fun onItemClick(restaurant: Restaurant) {
+        TODO("Not yet implemented")
     }
 
     private fun shouldStartSignIn(): Boolean =
