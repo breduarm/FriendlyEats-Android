@@ -56,5 +56,8 @@ glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "gl
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
+# Fragment Navigation
+androidx-navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navigationFragment" }
+
 # Google Services
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
