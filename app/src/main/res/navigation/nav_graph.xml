@@ -9,5 +9,19 @@
         android:id="@+id/mainFragment"
         android:name="com.beam.friendlyeats.ui.home.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_restaurantDetailFragment"
+            app:destination="@id/restaurantDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/restaurantDetailFragment"
+        android:name="com.beam.friendlyeats.ui.detail.RestaurantDetailFragment"
+        android:label="RestaurantDetailFragment"
+        tools:layout="@layout/fragment_restaurant_detail">
+        <argument
+            android:name="key_restaurant_id"
+            app:argType="string" />
+    </fragment>
 </navigation>
