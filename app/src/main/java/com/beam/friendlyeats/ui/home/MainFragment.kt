@@ -17,6 +17,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.beam.friendlyeats.R
 import com.beam.friendlyeats.databinding.FragmentMainBinding
 import com.beam.friendlyeats.domain.models.Restaurant
@@ -102,7 +103,15 @@ class MainFragment : Fragment(), MenuProvider, RestaurantsAdapter.OnItemClickLis
     }
 
     override fun onItemClick(restaurant: Restaurant) {
-        TODO("Not yet implemented")
+        goToRestaurantDetail("5LqIE0Qf4lcu3IAI9g2c")
+    }
+
+    private fun goToRestaurantDetail(restaurantId: String) {
+        // Go to the details page for the selected restaurant
+        val action = MainFragmentDirections
+            .actionMainFragmentToRestaurantDetailFragment(restaurantId)
+
+        findNavController().navigate(action)
     }
 
     private fun shouldStartSignIn(): Boolean =
