@@ -9,6 +9,9 @@ class RestaurantRepository {
 
     private val restaurantsDataSource = RestaurantLocalDataSource()
 
+    fun getRestaurantById(restaurantId: String): Flow<Restaurant> =
+        restaurantsDataSource.getById(restaurantId)
+
     suspend fun getAllRestaurants(): List<Restaurant> =
         restaurantsDataSource.findAllRestaurants()
 
