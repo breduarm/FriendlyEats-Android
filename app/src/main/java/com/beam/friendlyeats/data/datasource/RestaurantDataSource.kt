@@ -2,10 +2,14 @@ package com.beam.friendlyeats.data.datasource
 
 import com.beam.friendlyeats.data.local.firestore.collections.RestaurantCollection
 import com.beam.friendlyeats.data.local.firestore.dao.RestaurantDaoFirebaseImpl
+import com.beam.friendlyeats.data.local.firestore.mappers.toDomain
 import com.beam.friendlyeats.domain.models.Restaurant
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.mapNotNull
 
 interface RestaurantDataSource {
+
+    fun getById(restaurantId: String): Flow<Restaurant?>
 
     suspend fun findAllRestaurants(): List<Restaurant>
 
@@ -19,6 +23,9 @@ interface RestaurantDataSource {
 class RestaurantLocalDataSource : RestaurantDataSource {
 
     private val restaurantDao = RestaurantDaoFirebaseImpl()
+
+    override fun getById(restaurantId: String): Flow<Restaurant> =
+        restaurantDao.getById(restaurantId).mapNotNull { it?.toDomain() }
 
     override suspend fun findAllRestaurants(): List<Restaurant> = restaurantDao.findAllRestaurants()
 
