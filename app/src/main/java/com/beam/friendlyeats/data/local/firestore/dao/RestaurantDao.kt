@@ -18,6 +18,8 @@ import kotlinx.coroutines.tasks.await
 
 interface RestaurantDao {
 
+    fun getById(restaurantId: String): Flow<RestaurantCollection?>
+
     suspend fun findAllRestaurants(): List<Restaurant>
 
     suspend fun findRestaurantsByIds(ids: List<String>): List<Restaurant>
@@ -40,6 +42,21 @@ class RestaurantDaoFirebaseImpl : RestaurantDao {
         }
         firestore.firestoreSettings = settings
         return firestore
+    }
+
+    override fun getById(restaurantId: String): Flow<RestaurantCollection?> = callbackFlow {
+        val listener = collection.document(restaurantId).addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                Log.w(RestaurantDaoFirebaseImpl::class.java.simpleName, "Listen failed.", error)
+                close(error)
+                return@addSnapshotListener
+            }
+
+            val result = snapshot?.toObject(RestaurantCollection::class.java)
+            trySend(result)
+        }
+
+        awaitClose { listener.remove() }
     }
 
     override suspend fun findAllRestaurants(): List<Restaurant> = collection
