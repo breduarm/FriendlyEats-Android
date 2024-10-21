@@ -6,7 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.beam.friendlyeats.databinding.FragmentRestaurantDetailBinding
+import kotlinx.coroutines.launch
 
 class RestaurantDetailFragment : Fragment() {
 
@@ -26,6 +30,14 @@ class RestaurantDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val restaurantId = RestaurantDetailFragmentArgs.fromBundle(requireArguments()).keyRestaurantId
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { state ->
+                    // TODO Update UI
+                }
+            }
+        }
 
         viewModel.onUiReady(restaurantId)
     }
