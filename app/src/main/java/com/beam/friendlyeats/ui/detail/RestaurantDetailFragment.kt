@@ -20,6 +20,8 @@ class RestaurantDetailFragment : Fragment() {
     private lateinit var binding: FragmentRestaurantDetailBinding
     private val viewModel: RestaurantDetailViewModel by viewModels()
 
+    private lateinit var ratingAdapter: RatingAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
