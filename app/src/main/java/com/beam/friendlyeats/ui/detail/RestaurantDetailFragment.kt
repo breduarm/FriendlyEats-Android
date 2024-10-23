@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -40,6 +41,7 @@ class RestaurantDetailFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
                     state.restaurant?.let { onRestaurantLoaded(it) }
+                    displayRatingEmptyState(shouldShow = true)
                 }
             }
         }
@@ -58,5 +60,10 @@ class RestaurantDetailFragment : Fragment() {
         Glide.with(restaurantImage.context)
             .load(restaurant.photo)
             .into(restaurantImage)
+    }
+
+    private fun displayRatingEmptyState(shouldShow: Boolean): Unit = with(binding) {
+        viewEmptyRatings.isVisible = shouldShow
+        recyclerRatings.isVisible = !shouldShow
     }
 }
