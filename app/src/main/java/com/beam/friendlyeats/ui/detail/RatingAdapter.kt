@@ -1,27 +1,35 @@
 package com.beam.friendlyeats.ui.detail
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.beam.friendlyeats.databinding.ItemRatingBinding
 import com.beam.friendlyeats.domain.models.Rating
 
 class RatingAdapter : ListAdapter<Rating, RatingItemViewHolder>(RatingDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RatingItemViewHolder {
-        TODO("Not yet implemented")
+        val view = ItemRatingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return RatingItemViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RatingItemViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(getItem(position))
     }
 }
 
-class RatingItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class RatingItemViewHolder(
+    private val binding: ItemRatingBinding
+) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind() {
-        // TODO: Bind the data to the view
+    fun bind(rating: Rating?): Unit = with(binding) {
+        if (rating == null) return@with
+
+        ratingItemText.text = rating.text
+        ratingItemName.text = rating.userName
+        ratingItemRating.rating = rating.rating.toFloat()
     }
 }
 
