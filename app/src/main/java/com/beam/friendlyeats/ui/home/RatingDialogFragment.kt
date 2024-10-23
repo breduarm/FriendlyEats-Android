@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.beam.friendlyeats.databinding.DialogRatingBinding
-import com.beam.friendlyeats.ui.models.Rating
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 

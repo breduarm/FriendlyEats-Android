@@ -1,13 +1,10 @@
-package com.beam.friendlyeats.ui.models
+package com.beam.friendlyeats.data.local.firestore.collections
 
 import android.text.TextUtils
 import com.google.firebase.auth.FirebaseUser
 import java.util.Date
 
-/**
- * Model POJO for a rating.
- */
-data class Rating(
+data class RatingCollection(
     var userId: String? = null,
     var userName: String? = null,
     var rating: Double = 0.toDouble(),
