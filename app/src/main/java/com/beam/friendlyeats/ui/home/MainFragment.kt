@@ -103,7 +103,7 @@ class MainFragment : Fragment(), MenuProvider, RestaurantsAdapter.OnItemClickLis
     }
 
     override fun onItemClick(restaurant: Restaurant) {
-        goToRestaurantDetail("5LqIE0Qf4lcu3IAI9g2c")
+        goToRestaurantDetail("zHaBNy6AoMQu5pGKVueN")
     }
 
     private fun goToRestaurantDetail(restaurantId: String) {
