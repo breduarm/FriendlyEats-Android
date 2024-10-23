@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.beam.friendlyeats.databinding.DialogRatingBinding
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -21,7 +22,11 @@ class RatingDialogFragment : DialogFragment() {
 
     internal interface RatingListener {
 
-        fun onRating(rating: Rating)
+        fun onRating(
+            user: FirebaseUser,
+            ratingValue: Double,
+            ratingText: String,
+        )
     }
 
     override fun onCreateView(
@@ -66,13 +71,14 @@ class RatingDialogFragment : DialogFragment() {
     private fun onSubmitClicked() {
         val user = Firebase.auth.currentUser
         user?.let {
-            val rating = Rating(
-                user = it,
-                rating = binding.restaurantFormRating.rating.toDouble(),
-                text = binding.restaurantFormText.text.toString()
-            )
+            val ratingValue = binding.restaurantFormRating.rating.toDouble()
+            val ratingText = binding.restaurantFormText.text.toString()
 
-            ratingListener?.onRating(rating)
+            ratingListener?.onRating(
+                user = it,
+                ratingValue = ratingValue,
+                ratingText = ratingText
+            )
         }
 
         dismiss()
@@ -80,10 +86,5 @@ class RatingDialogFragment : DialogFragment() {
 
     private fun onCancelClicked() {
         dismiss()
-    }
-
-    companion object {
-
-        const val TAG = "RatingDialog"
     }
 }
