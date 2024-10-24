@@ -13,7 +13,6 @@ fun RestaurantCollection.toDomain() = Restaurant(
     price = price,
     numRatings = numRatings,
     avgRating = avgRating,
-    ratings = ratings?.map { it.toDomain() }.orEmpty()
 )
 
 fun RatingCollection.toDomain() = Rating(

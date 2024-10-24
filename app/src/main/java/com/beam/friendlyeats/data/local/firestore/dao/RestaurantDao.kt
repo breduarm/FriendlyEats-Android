@@ -53,6 +53,8 @@ class RestaurantDaoFirebaseImpl : RestaurantDao {
             }
 
             val result = snapshot?.toObject(RestaurantCollection::class.java)
+
+            val aux: Any? = snapshot
             trySend(result)
         }
 

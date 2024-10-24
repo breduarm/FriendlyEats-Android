@@ -8,7 +8,6 @@ data class Restaurant(
     val price: Int,
     val numRatings: Int,
     val avgRating: Double,
-    val ratings: List<Rating>,
 ) {
 
     fun getPriceString(): String = when (price) {

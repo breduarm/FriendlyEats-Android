@@ -41,7 +41,7 @@ class RestaurantDetailFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
                     state.restaurant?.let { onRestaurantLoaded(it) }
-                    displayRatingEmptyState(shouldShow = state.restaurant?.ratings.isNullOrEmpty())
+                    displayRatingEmptyState(shouldShow = true)
                 }
             }
         }

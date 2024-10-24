@@ -17,7 +17,6 @@ data class RestaurantCollection(
     var price: Int = 0,
     var numRatings: Int = 0,
     var avgRating: Double = 0.toDouble(),
-    var ratings: List<RatingCollection>? = emptyList(),
 ) {
 
     companion object {
