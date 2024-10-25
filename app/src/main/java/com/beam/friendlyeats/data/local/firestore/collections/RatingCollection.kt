@@ -22,4 +22,8 @@ data class RatingCollection(
         this.rating = rating
         this.text = text
     }
+
+    companion object {
+        const val COLLECTION_KEY = "ratings"
+    }
 }

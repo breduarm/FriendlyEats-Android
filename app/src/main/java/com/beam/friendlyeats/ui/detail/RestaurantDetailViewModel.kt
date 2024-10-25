@@ -2,7 +2,9 @@ package com.beam.friendlyeats.ui.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.beam.friendlyeats.data.repositories.RatingRepository
 import com.beam.friendlyeats.data.repositories.RestaurantRepository
+import com.beam.friendlyeats.domain.models.Rating
 import com.beam.friendlyeats.domain.models.Restaurant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +18,7 @@ class RestaurantDetailViewModel : ViewModel() {
     val state: StateFlow<UiState> = _state
 
     private val restaurantRepository = RestaurantRepository()
+    private val ratingRepository = RatingRepository()
 
     fun onUiReady(restaurantId: String) {
         viewModelScope.launch {
@@ -24,9 +27,17 @@ class RestaurantDetailViewModel : ViewModel() {
                 _state.value = _state.value.copy(restaurant = restaurant)
             }
         }
+
+        viewModelScope.launch {
+            val ratingsFlow = ratingRepository.getRatingsByRestaurantId(restaurantId)
+            ratingsFlow.flowOn(Dispatchers.IO).collect { ratings ->
+                _state.value = _state.value.copy(ratings = ratings)
+            }
+        }
     }
 
     data class UiState(
         val restaurant: Restaurant? = null,
+        val ratings: List<Rating> = emptyList(),
     )
 }
