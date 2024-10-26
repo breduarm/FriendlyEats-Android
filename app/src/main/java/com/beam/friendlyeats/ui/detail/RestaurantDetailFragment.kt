@@ -46,7 +46,14 @@ class RestaurantDetailFragment : Fragment() {
             }
         }
 
+        initializeUI()
         viewModel.onUiReady(restaurantId)
+    }
+
+    private fun initializeUI() = with(binding) {
+        ratingAdapter = RatingAdapter()
+        recyclerRatings.adapter = ratingAdapter
+        restaurantButtonBack.setOnClickListener { onBackArrowClicked() }
     }
 
     private fun onRestaurantLoaded(restaurant: Restaurant) = with(binding) {
@@ -65,5 +72,9 @@ class RestaurantDetailFragment : Fragment() {
     private fun displayRatingEmptyState(shouldShow: Boolean): Unit = with(binding) {
         viewEmptyRatings.isVisible = shouldShow
         recyclerRatings.isVisible = !shouldShow
+    }
+
+    private fun onBackArrowClicked() {
+        requireActivity().onBackPressed()
     }
 }
