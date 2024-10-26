@@ -3,22 +3,23 @@ package com.beam.friendlyeats.data.repositories
 import com.beam.friendlyeats.data.datasource.RestaurantLocalDataSource
 import com.beam.friendlyeats.data.local.firestore.collections.RestaurantCollection
 import com.beam.friendlyeats.domain.models.Restaurant
+import com.beam.friendlyeats.domain.repositories.RestaurantRepository
 import kotlinx.coroutines.flow.Flow
 
-class RestaurantRepository {
+class RestaurantRepositoryImpl : RestaurantRepository {
 
     private val restaurantsDataSource = RestaurantLocalDataSource()
 
-    fun getRestaurantById(restaurantId: String): Flow<Restaurant> =
+    override fun getRestaurantById(restaurantId: String): Flow<Restaurant> =
         restaurantsDataSource.getById(restaurantId)
 
-    suspend fun getAllRestaurants(): List<Restaurant> =
+    override suspend fun getAllRestaurants(): List<Restaurant> =
         restaurantsDataSource.findAllRestaurants()
 
-    fun observeAllRestaurants(): Flow<List<Restaurant>> =
+    override fun observeAllRestaurants(): Flow<List<Restaurant>> =
         restaurantsDataSource.findAllRestaurantsFlow()
 
-    fun addRandomRestaurants(cities: Array<String>, categories: Array<String>) {
+    override fun addRandomRestaurants(cities: Array<String>, categories: Array<String>) {
         val randomRestaurants: MutableList<RestaurantCollection> = mutableListOf()
         for (i in 0..RANDOM_RESTAURANTS_LIMIT) {
             // Create random restaurant / ratings

@@ -3,7 +3,7 @@ package com.beam.friendlyeats.ui.home
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.beam.friendlyeats.data.repositories.RestaurantRepository
+import com.beam.friendlyeats.data.repositories.RestaurantRepositoryImpl
 import com.beam.friendlyeats.domain.models.Restaurant
 import com.firebase.ui.auth.AuthUI
 import kotlinx.coroutines.Dispatchers
@@ -17,13 +17,13 @@ class MainActivityViewModel : ViewModel() {
     private val _state = MutableStateFlow(UiState())
     val state: StateFlow<UiState> get() = _state
 
-    private val restaurantRepository = RestaurantRepository()
+    private val restaurantRepositoryImpl = RestaurantRepositoryImpl()
 
     var isSigningIn: Boolean = false
 
     fun onUiReady() {
         viewModelScope.launch {
-            restaurantRepository
+            restaurantRepositoryImpl
                 .observeAllRestaurants()
                 .flowOn(Dispatchers.IO)
                 .collect { restaurants ->
@@ -37,7 +37,7 @@ class MainActivityViewModel : ViewModel() {
     }
 
     fun onAddRandomItems(cities: Array<String>, categories: Array<String>) {
-        restaurantRepository.addRandomRestaurants(cities, categories)
+        restaurantRepositoryImpl.addRandomRestaurants(cities, categories)
     }
 
     data class UiState(
