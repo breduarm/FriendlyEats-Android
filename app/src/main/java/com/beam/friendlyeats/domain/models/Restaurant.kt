@@ -1,6 +1,7 @@
 package com.beam.friendlyeats.domain.models
 
 data class Restaurant(
+    val id: String,
     val name: String,
     val city: String,
     val category: String,

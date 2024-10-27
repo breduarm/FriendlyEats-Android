@@ -14,10 +14,11 @@ fun RestaurantsGroupCollection.toDomain() = RestaurantsGroup(
 )
 
 fun RestaurantCollection.toDomain() = Restaurant(
-    name = name ?: "",
-    city = city ?: "",
-    category = category ?: "",
-    photo = photo ?: "",
+    id = id.orEmpty(),
+    name = name.orEmpty(),
+    city = city.orEmpty(),
+    category = category.orEmpty(),
+    photo = photo.orEmpty(),
     price = price,
     numRatings = numRatings,
     avgRating = avgRating,
