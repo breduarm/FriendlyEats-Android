@@ -20,7 +20,8 @@ class RestaurantsAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantsViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_restaurant, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_restaurant, parent, false)
         return RestaurantsViewHolder(view)
     }
 
@@ -37,14 +38,18 @@ class RestaurantsViewHolder(view: View) : ViewHolder(view) {
         restaurant: Restaurant,
         listener: RestaurantsAdapter.OnItemClickListener
     ): Unit = with(binding) {
+        val resources = binding.root.resources
+        val numRatings: Int = restaurant.numRatings
+
         root.setOnClickListener {
             listener.onItemClick(restaurant)
         }
-
         restaurantItemName.text = restaurant.name
         restaurantItemCity.text = restaurant.city
         restaurantItemCategory.text = restaurant.category
         restaurantItemPrice.text = restaurant.getPriceString()
+        binding.restaurantItemNumRatings.text =
+            resources.getString(R.string.fmt_num_ratings, numRatings)
         restaurantItemRating.rating = restaurant.avgRating.toFloat()
 
         Glide.with(restaurantItemImage.context)

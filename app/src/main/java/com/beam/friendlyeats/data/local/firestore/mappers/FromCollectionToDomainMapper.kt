@@ -28,4 +28,5 @@ fun RatingCollection.toDomain() = Rating(
     rating = rating,
     userId = userId.orEmpty(),
     userName = userName.orEmpty(),
+    timestamp = timestamp,
 )

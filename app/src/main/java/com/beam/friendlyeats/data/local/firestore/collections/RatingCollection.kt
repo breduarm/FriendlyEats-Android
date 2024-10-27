@@ -2,6 +2,7 @@ package com.beam.friendlyeats.data.local.firestore.collections
 
 import android.text.TextUtils
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.ServerTimestamp
 import java.util.Date
 
 data class RatingCollection(
@@ -9,7 +10,7 @@ data class RatingCollection(
     var userName: String? = null,
     var rating: Double = 0.toDouble(),
     var text: String? = null,
-    var timestamp: Date? = null
+    @ServerTimestamp var timestamp: Date? = null
 ) {
 
     constructor(user: FirebaseUser, rating: Double, text: String) : this() {

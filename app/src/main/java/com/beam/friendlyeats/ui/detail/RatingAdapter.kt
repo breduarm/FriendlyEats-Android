@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.beam.friendlyeats.databinding.ItemRatingBinding
 import com.beam.friendlyeats.domain.models.Rating
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class RatingAdapter : ListAdapter<Rating, RatingItemViewHolder>(RatingDiffCallback) {
 
@@ -30,6 +32,15 @@ class RatingItemViewHolder(
         ratingItemText.text = rating.text
         ratingItemName.text = rating.userName
         ratingItemRating.rating = rating.rating.toFloat()
+
+        if (rating.timestamp != null) {
+            binding.ratingItemDate.text = FORMAT.format(rating.timestamp)
+        }
+    }
+
+    companion object {
+
+        private val FORMAT = SimpleDateFormat("MM/dd/yyyy", Locale.US)
     }
 }
 
