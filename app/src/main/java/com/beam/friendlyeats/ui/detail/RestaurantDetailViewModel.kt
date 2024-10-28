@@ -36,6 +36,10 @@ class RestaurantDetailViewModel : ViewModel() {
         }
     }
 
+    fun addRating(restaurantId: String, newRating: Rating) {
+        ratingRepository.addRating(restaurantId, newRating)
+    }
+
     data class UiState(
         val restaurant: Restaurant? = null,
         val ratings: List<Rating> = emptyList(),

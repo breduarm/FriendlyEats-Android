@@ -11,4 +11,8 @@ class RatingRepositoryImpl : RatingRepository {
 
     override fun getRatingsByRestaurantId(restaurantId: String): Flow<List<Rating>> =
         ratingDataSource.getByRestaurantId(restaurantId)
+
+    override fun addRating(restaurantId: String, newRating: Rating) {
+        ratingDataSource.add(restaurantId, newRating)
+    }
 }

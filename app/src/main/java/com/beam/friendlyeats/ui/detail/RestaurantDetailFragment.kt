@@ -12,16 +12,19 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.beam.friendlyeats.R
 import com.beam.friendlyeats.databinding.FragmentRestaurantDetailBinding
+import com.beam.friendlyeats.domain.models.Rating
 import com.beam.friendlyeats.domain.models.Restaurant
 import com.beam.friendlyeats.ui.home.RatingDialogFragment
+import com.beam.friendlyeats.ui.home.RatingDialogFragment.RatingListener
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 
-class RestaurantDetailFragment : Fragment() {
+class RestaurantDetailFragment : Fragment(), RatingListener {
 
     private lateinit var binding: FragmentRestaurantDetailBinding
     private val viewModel: RestaurantDetailViewModel by viewModels()
 
+    private lateinit var restaurantId: String
     private lateinit var ratingDialog: RatingDialogFragment
     private lateinit var ratingAdapter: RatingAdapter
 
@@ -37,7 +40,7 @@ class RestaurantDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val restaurantId = RestaurantDetailFragmentArgs.fromBundle(requireArguments()).keyRestaurantId
+        restaurantId = RestaurantDetailFragmentArgs.fromBundle(requireArguments()).keyRestaurantId
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -53,8 +56,12 @@ class RestaurantDetailFragment : Fragment() {
         viewModel.onUiReady(restaurantId)
     }
 
+    override fun onRating(newRating: Rating) {
+        viewModel.addRating(restaurantId, newRating)
+    }
+
     private fun initializeUI() = with(binding) {
-        ratingDialog = RatingDialogFragment()
+        ratingDialog = RatingDialogFragment(listener = this@RestaurantDetailFragment)
         ratingAdapter = RatingAdapter()
         recyclerRatings.adapter = ratingAdapter
         restaurantButtonBack.setOnClickListener { onBackArrowClicked() }

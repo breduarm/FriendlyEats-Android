@@ -9,10 +9,13 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.persistentCacheSettings
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.tasks.await
 
 interface RatingDao {
 
     fun getByRestaurantId(restaurantId: String): Flow<List<RatingCollection>>
+
+    fun add(restaurantId: String, newRating: RatingCollection): Boolean
 }
 
 class RatingDaoFirebaseImpl : RatingDao {
@@ -35,4 +38,11 @@ class RatingDaoFirebaseImpl : RatingDao {
             .document(restaurantId)
             .collection(RatingCollection.COLLECTION_KEY)
             .dataObjects()
+
+    override fun add(restaurantId: String, newRating: RatingCollection): Boolean =
+        restaurantRef
+            .document(restaurantId)
+            .collection(RatingCollection.COLLECTION_KEY)
+            .add(newRating)
+            .isSuccessful
 }

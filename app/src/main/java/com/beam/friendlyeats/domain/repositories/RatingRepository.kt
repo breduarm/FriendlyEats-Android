@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface RatingRepository {
 
     fun getRatingsByRestaurantId(restaurantId: String): Flow<List<Rating>>
+
+    fun addRating(restaurantId: String, newRating: Rating)
 }

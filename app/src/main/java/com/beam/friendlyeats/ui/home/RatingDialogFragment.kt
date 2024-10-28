@@ -1,32 +1,26 @@
 package com.beam.friendlyeats.ui.home
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.beam.friendlyeats.databinding.DialogRatingBinding
-import com.google.firebase.auth.FirebaseUser
+import com.beam.friendlyeats.domain.models.Rating
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 /**
  * Dialog Fragment containing rating form.
  */
-class RatingDialogFragment : DialogFragment() {
+class RatingDialogFragment(private val listener: RatingListener) : DialogFragment() {
 
     private var _binding: DialogRatingBinding? = null
     private val binding get() = _binding!!
-    private var ratingListener: RatingListener? = null
 
-    internal interface RatingListener {
+    interface RatingListener {
 
-        fun onRating(
-            user: FirebaseUser,
-            ratingValue: Double,
-            ratingText: String,
-        )
+        fun onRating(newRating: Rating)
     }
 
     override fun onCreateView(
@@ -42,16 +36,6 @@ class RatingDialogFragment : DialogFragment() {
         }
 
         return binding.root
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        if (parentFragment is RatingListener) {
-            ratingListener = parentFragment as RatingListener
-        } else {
-            // No opt
-        }
     }
 
     override fun onResume() {
@@ -74,11 +58,14 @@ class RatingDialogFragment : DialogFragment() {
             val ratingValue = binding.restaurantFormRating.rating.toDouble()
             val ratingText = binding.restaurantFormText.text.toString()
 
-            ratingListener?.onRating(
-                user = it,
-                ratingValue = ratingValue,
-                ratingText = ratingText
+            val rating = Rating(
+                userId = user.uid,
+                userName = user.displayName,
+                rating = ratingValue,
+                text = ratingText,
             )
+
+            listener.onRating(rating)
         }
 
         dismiss()
