@@ -13,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.beam.friendlyeats.R
 import com.beam.friendlyeats.databinding.FragmentRestaurantDetailBinding
 import com.beam.friendlyeats.domain.models.Restaurant
+import com.beam.friendlyeats.ui.home.RatingDialogFragment
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 
@@ -21,6 +22,7 @@ class RestaurantDetailFragment : Fragment() {
     private lateinit var binding: FragmentRestaurantDetailBinding
     private val viewModel: RestaurantDetailViewModel by viewModels()
 
+    private lateinit var ratingDialog: RatingDialogFragment
     private lateinit var ratingAdapter: RatingAdapter
 
     override fun onCreateView(
@@ -52,9 +54,11 @@ class RestaurantDetailFragment : Fragment() {
     }
 
     private fun initializeUI() = with(binding) {
+        ratingDialog = RatingDialogFragment()
         ratingAdapter = RatingAdapter()
         recyclerRatings.adapter = ratingAdapter
         restaurantButtonBack.setOnClickListener { onBackArrowClicked() }
+        fabShowRatingDialog.setOnClickListener { onAddRatingClicked() }
     }
 
     private fun onRestaurantLoaded(restaurant: Restaurant) = with(binding) {
@@ -68,6 +72,10 @@ class RestaurantDetailFragment : Fragment() {
         Glide.with(restaurantImage.context)
             .load(restaurant.photo)
             .into(restaurantImage)
+    }
+
+    private fun onAddRatingClicked() {
+        ratingDialog.show(parentFragmentManager, RatingDialogFragment::class.java.simpleName)
     }
 
     private fun displayRatingEmptyState(shouldShow: Boolean): Unit = with(binding) {
