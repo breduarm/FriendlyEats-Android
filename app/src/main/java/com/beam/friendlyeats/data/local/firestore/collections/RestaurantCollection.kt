@@ -60,7 +60,7 @@ data class RestaurantCollection(
             newRestaurant.category = getRandomString(processedCategories, random)
             newRestaurant.photo = getRandomImageUrl(random)
             newRestaurant.price = getRandomInt(prices, random)
-            newRestaurant.numRatings = random.nextInt(20)
+            newRestaurant.numRatings = 0
 
             // Note: average rating intentionally not set
 
