@@ -1,7 +1,6 @@
 package com.beam.friendlyeats.data.local.firestore.collections
 
 import com.google.firebase.firestore.DocumentId
-import com.google.firebase.firestore.IgnoreExtraProperties
 import java.util.Arrays
 import java.util.Locale
 import java.util.Random
@@ -9,7 +8,6 @@ import java.util.Random
 /**
  * Restaurant POJO.
  */
-@IgnoreExtraProperties
 data class RestaurantCollection(
     @DocumentId var id: String? = null,
     var name: String? = null,

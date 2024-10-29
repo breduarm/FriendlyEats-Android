@@ -1,21 +1,17 @@
 package com.beam.friendlyeats.data.local.firestore.dao
 
-import android.util.Log
 import com.beam.friendlyeats.data.local.firestore.collections.RestaurantsGroupCollection
-import com.beam.friendlyeats.data.local.firestore.mappers.toDomain
-import com.beam.friendlyeats.domain.models.RestaurantsGroup
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.persistentCacheSettings
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 
 interface RestaurantsGroupDao {
 
-    fun findAllRestaurantsGroupFlow(): Flow<List<RestaurantsGroup>>
+    fun findAllRestaurantsGroupFlow(): Flow<List<RestaurantsGroupCollection>>
 }
 
 class RestaurantsGroupDaoFirebaseImpl : RestaurantsGroupDao {
@@ -33,19 +29,6 @@ class RestaurantsGroupDaoFirebaseImpl : RestaurantsGroupDao {
         return firestore
     }
 
-    override fun findAllRestaurantsGroupFlow(): Flow<List<RestaurantsGroup>> = callbackFlow {
-        val listener = collection.addSnapshotListener { snapshot, error ->
-            if (error != null) {
-                Log.w(RestaurantsGroupDaoFirebaseImpl::class.java.simpleName, "Listen failed.", error)
-                close(error)
-                return@addSnapshotListener
-            }
-            val result = snapshot?.toObjects(RestaurantsGroupCollection::class.java)?.map {
-                it.toDomain()
-            }.orEmpty()
-            trySend(result).isSuccess
-        }
-        
-        awaitClose { listener.remove() }
-    }
+    override fun findAllRestaurantsGroupFlow(): Flow<List<RestaurantsGroupCollection>> =
+        collection.dataObjects()
 }
