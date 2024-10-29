@@ -24,6 +24,6 @@ class RatingLocalDataSource : RatingDataSource {
         }
 
     override fun add(restaurantId: String, newRating: Rating) {
-        ratingDao.add(restaurantId, newRating.toCollection())
+        ratingDao.addTransactional(restaurantId, newRating.toCollection())
     }
 }

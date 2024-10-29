@@ -14,13 +14,13 @@ interface RatingDao {
 
     fun getByRestaurantId(restaurantId: String): Flow<List<RatingCollection>>
 
-    fun add(restaurantId: String, newRating: RatingCollection)
+    fun addTransactional(restaurantId: String, newRating: RatingCollection)
 }
 
 class RatingDaoFirebaseImpl : RatingDao {
 
     private val db = initFirestore()
-    private val restaurantRef = db.collection(RestaurantCollection.COLLECTION_KEY)
+    private val restaurantCollRef = db.collection(RestaurantCollection.COLLECTION_KEY)
 
     private fun initFirestore(): FirebaseFirestore {
         val firestore = Firebase.firestore
@@ -33,15 +33,60 @@ class RatingDaoFirebaseImpl : RatingDao {
     }
 
     override fun getByRestaurantId(restaurantId: String): Flow<List<RatingCollection>> =
-        restaurantRef
+        restaurantCollRef
             .document(restaurantId)
             .collection(RatingCollection.COLLECTION_KEY)
             .dataObjects()
 
-    override fun add(restaurantId: String, newRating: RatingCollection) {
-        restaurantRef
-            .document(restaurantId)
-            .collection(RatingCollection.COLLECTION_KEY)
-            .add(newRating)
+    /**
+     * Adds a new rating to a restaurant and updates the fields (`numRatings` and `avgRating`)
+     * using a Firestore transaction to ensure consistency.
+     *
+     * ## Why use a transaction?
+     * This approach was chosen instead of retrieving all ratings to recalculate the restaurant
+     * for the following reasons:
+     *
+     * - **Atomic consistency**: Transactions ensure that both the restaurant's fields and
+     *   the new rating are written together atomically. This prevents race conditions that
+     *   could occur if multiple users rate the same restaurant at the same time.
+     *
+     * - **Efficiency**: Instead of reading the entire sub collection of ratings, only the
+     *   current state of the restaurant is read and updated, minimizing read operations
+     *   and network usage.
+     *
+     * - **Scalability**: This method performs better as the number of ratings grows,
+     *   avoiding performance degradation.
+     *
+     * @param restaurantId The ID of the restaurant to add the rating to.
+     * @param newRating The rating object to be added.
+     * @throws Exception if the restaurant document does not exist or the transaction fails.
+     */
+    override fun addTransactional(restaurantId: String, newRating: RatingCollection) {
+
+        val restaurantRef = restaurantCollRef.document(restaurantId)
+        val ratingRef = restaurantRef.collection(RatingCollection.COLLECTION_KEY).document()
+
+        db.runTransaction { transaction ->
+
+            val restaurant = transaction
+                .get(restaurantRef)
+                .toObject(RestaurantCollection::class.java)
+                ?: throw Exception("Restaurant not found at ${restaurantRef.path}")
+
+            // Compute new number of ratings
+            val newNumRatings = restaurant.numRatings + 1
+
+            // Compute new average rating
+            val oldRatingTotal = restaurant.avgRating * restaurant.numRatings
+            val newAvgRating = (oldRatingTotal + newRating.rating) / newNumRatings
+
+            // Set new restaurant info
+            restaurant.numRatings = newNumRatings
+            restaurant.avgRating = newAvgRating
+
+            // Commit to Firestore
+            transaction.set(restaurantRef, restaurant)
+            transaction.set(ratingRef, newRating)
+        }
     }
 }
