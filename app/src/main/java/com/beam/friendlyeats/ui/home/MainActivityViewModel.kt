@@ -17,13 +17,13 @@ class MainActivityViewModel : ViewModel() {
     private val _state = MutableStateFlow(UiState())
     val state: StateFlow<UiState> get() = _state
 
-    private val restaurantRepositoryImpl = RestaurantRepositoryImpl()
+    private val restaurantRepository = RestaurantRepositoryImpl()
 
     var isSigningIn: Boolean = false
 
     fun onUiReady() {
         viewModelScope.launch {
-            restaurantRepositoryImpl
+            restaurantRepository
                 .observeAllRestaurants()
                 .flowOn(Dispatchers.IO)
                 .collect { restaurants ->
@@ -37,7 +37,7 @@ class MainActivityViewModel : ViewModel() {
     }
 
     fun onAddRandomItems(cities: Array<String>, categories: Array<String>) {
-        restaurantRepositoryImpl.addRandomRestaurants(cities, categories)
+        restaurantRepository.addRandomRestaurants(cities, categories)
     }
 
     data class UiState(

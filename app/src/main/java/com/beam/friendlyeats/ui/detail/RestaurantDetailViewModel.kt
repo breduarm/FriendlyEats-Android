@@ -17,12 +17,12 @@ class RestaurantDetailViewModel : ViewModel() {
     private val _state = MutableStateFlow(UiState())
     val state: StateFlow<UiState> = _state
 
-    private val restaurantRepositoryImpl = RestaurantRepositoryImpl()
+    private val restaurantRepository = RestaurantRepositoryImpl()
     private val ratingRepository = RatingRepositoryImpl()
 
     fun onUiReady(restaurantId: String) {
         viewModelScope.launch {
-            val restaurantFlow = restaurantRepositoryImpl.getRestaurantById(restaurantId)
+            val restaurantFlow = restaurantRepository.getRestaurantById(restaurantId)
             restaurantFlow.flowOn(Dispatchers.IO).collect { restaurant ->
                 _state.value = _state.value.copy(restaurant = restaurant)
             }
