@@ -14,7 +14,7 @@ interface RatingDao {
 
     fun getByRestaurantId(restaurantId: String): Flow<List<RatingCollection>>
 
-    fun add(restaurantId: String, newRating: RatingCollection): Boolean
+    fun add(restaurantId: String, newRating: RatingCollection)
 }
 
 class RatingDaoFirebaseImpl : RatingDao {
@@ -38,10 +38,10 @@ class RatingDaoFirebaseImpl : RatingDao {
             .collection(RatingCollection.COLLECTION_KEY)
             .dataObjects()
 
-    override fun add(restaurantId: String, newRating: RatingCollection): Boolean =
+    override fun add(restaurantId: String, newRating: RatingCollection) {
         restaurantRef
             .document(restaurantId)
             .collection(RatingCollection.COLLECTION_KEY)
             .add(newRating)
-            .isSuccessful
+    }
 }

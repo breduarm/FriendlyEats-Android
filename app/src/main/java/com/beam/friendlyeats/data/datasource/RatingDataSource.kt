@@ -24,9 +24,6 @@ class RatingLocalDataSource : RatingDataSource {
         }
 
     override fun add(restaurantId: String, newRating: Rating) {
-        val isSuccess = ratingDao.add(restaurantId, newRating.toCollection())
-        if (!isSuccess) {
-            throw Exception("Error adding rating")
-        }
+        ratingDao.add(restaurantId, newRating.toCollection())
     }
 }
