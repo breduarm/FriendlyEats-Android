@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment
 import com.beam.friendlyeats.R
 import com.beam.friendlyeats.databinding.DialogFilterBinding
 import com.beam.friendlyeats.domain.models.Restaurant
+import com.beam.friendlyeats.ui.models.Filter
 import com.google.firebase.firestore.Query
 
 class FilterDialogFragment : DialogFragment() {
@@ -80,9 +81,9 @@ class FilterDialogFragment : DialogFragment() {
             }
         }
 
-    val filters: Filters
+    val filters: Filter
         get() {
-            val filters = Filters()
+            val filters = Filter()
 
             filters.category = selectedCategory
             filters.city = selectedCity
@@ -95,15 +96,15 @@ class FilterDialogFragment : DialogFragment() {
 
     interface FilterListener {
 
-        fun onFilter(filters: Filters)
+        fun onFilter(filters: Filter)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = DialogFiltersBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = DialogFilterBinding.inflate(inflater, container, false)
 
         binding.buttonSearch.setOnClickListener { onSearchClicked() }
         binding.buttonCancel.setOnClickListener { onCancelClicked() }
@@ -128,7 +129,8 @@ class FilterDialogFragment : DialogFragment() {
         super.onResume()
         dialog?.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT)
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 
     private fun onSearchClicked() {
