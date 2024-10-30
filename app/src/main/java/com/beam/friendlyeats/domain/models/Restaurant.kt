@@ -11,10 +11,17 @@ data class Restaurant(
     val avgRating: Double,
 ) {
 
-    fun getPriceString(): String = when (price) {
-        1 -> "$"
-        2 -> "$$"
-        3 -> "$$$"
-        else -> "$$$"
+    companion object {
+
+        const val FIELD_PRICE = "price"
+        const val FIELD_POPULARITY = "numRatings"
+        const val FIELD_AVG_RATING = "avgRating"
+
+        fun getPriceString(price: Int): String = when (price) {
+            1 -> "$"
+            2 -> "$$"
+            3 -> "$$$"
+            else -> "$$$"
+        }
     }
 }

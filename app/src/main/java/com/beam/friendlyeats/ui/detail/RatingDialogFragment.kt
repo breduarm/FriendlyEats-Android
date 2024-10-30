@@ -1,4 +1,4 @@
-package com.beam.friendlyeats.ui.home
+package com.beam.friendlyeats.ui.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater

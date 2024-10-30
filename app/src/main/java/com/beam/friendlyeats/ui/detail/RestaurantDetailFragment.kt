@@ -14,8 +14,8 @@ import com.beam.friendlyeats.R
 import com.beam.friendlyeats.databinding.FragmentRestaurantDetailBinding
 import com.beam.friendlyeats.domain.models.Rating
 import com.beam.friendlyeats.domain.models.Restaurant
-import com.beam.friendlyeats.ui.home.RatingDialogFragment
-import com.beam.friendlyeats.ui.home.RatingDialogFragment.RatingListener
+import com.beam.friendlyeats.domain.models.Restaurant.Companion.getPriceString
+import com.beam.friendlyeats.ui.detail.RatingDialogFragment.RatingListener
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 
@@ -71,7 +71,7 @@ class RestaurantDetailFragment : Fragment(), RatingListener {
     private fun onRestaurantLoaded(restaurant: Restaurant) = with(binding) {
         restaurantName.text = restaurant.name
         restaurantCity.text = restaurant.city
-        restaurantPrice.text = restaurant.getPriceString()
+        restaurantPrice.text = getPriceString(restaurant.price)
         restaurantCategory.text = restaurant.category
         restaurantRating.rating = restaurant.avgRating.toFloat()
         restaurantNumRatings.text = getString(R.string.fmt_num_ratings, restaurant.numRatings)

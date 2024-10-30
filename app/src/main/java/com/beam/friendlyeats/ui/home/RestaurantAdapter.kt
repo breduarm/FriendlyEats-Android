@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.beam.friendlyeats.R
 import com.beam.friendlyeats.databinding.ItemRestaurantBinding
 import com.beam.friendlyeats.domain.models.Restaurant
+import com.beam.friendlyeats.domain.models.Restaurant.Companion.getPriceString
 import com.bumptech.glide.Glide
 
 class RestaurantsAdapter(
@@ -47,7 +48,7 @@ class RestaurantsViewHolder(view: View) : ViewHolder(view) {
         restaurantItemName.text = restaurant.name
         restaurantItemCity.text = restaurant.city
         restaurantItemCategory.text = restaurant.category
-        restaurantItemPrice.text = restaurant.getPriceString()
+        restaurantItemPrice.text = getPriceString(restaurant.price)
         binding.restaurantItemNumRatings.text =
             resources.getString(R.string.fmt_num_ratings, numRatings)
         restaurantItemRating.rating = restaurant.avgRating.toFloat()
