@@ -69,6 +69,9 @@ dependencies {
     implementation(libs.firebaseui.fiebase.ui.auth)
     implementation(libs.firebase.firestore.ktx)
 
+    // Couchbase
+    implementation(libs.couchbase.lite.android)
+
     // Material Rating Bar
     implementation(libs.materialratingbar)
 
