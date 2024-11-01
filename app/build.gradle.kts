@@ -58,6 +58,11 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
+    // DI
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
