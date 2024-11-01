@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.text.HtmlCompat
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -21,19 +22,24 @@ import androidx.navigation.fragment.findNavController
 import com.beam.friendlyeats.R
 import com.beam.friendlyeats.databinding.FragmentMainBinding
 import com.beam.friendlyeats.domain.models.Restaurant
+import com.beam.friendlyeats.ui.models.Filter
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
-class MainFragment : Fragment(), MenuProvider, RestaurantsAdapter.OnItemClickListener {
+class MainFragment : Fragment(), MenuProvider, RestaurantsAdapter.OnItemClickListener,
+    FilterDialogFragment.FilterListener {
 
     private lateinit var binding: FragmentMainBinding
     private val viewModel: MainActivityViewModel by activityViewModels()
 
+    private lateinit var adapter: RestaurantsAdapter
     private lateinit var filterDialog: FilterDialogFragment
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
@@ -50,7 +56,7 @@ class MainFragment : Fragment(), MenuProvider, RestaurantsAdapter.OnItemClickLis
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = RestaurantsAdapter(listener = this)
+        adapter = RestaurantsAdapter(listener = this)
         binding.recyclerRestaurants.adapter = adapter
         filterDialog = FilterDialogFragment()
         binding.filterBar.setOnClickListener { onFilterClicked() }
@@ -108,6 +114,57 @@ class MainFragment : Fragment(), MenuProvider, RestaurantsAdapter.OnItemClickLis
 
     override fun onItemClick(restaurant: Restaurant) {
         goToRestaurantDetail(restaurantId = restaurant.id)
+    }
+
+    override fun onFilter(filters: Filter) {
+        val firestore = Firebase.firestore
+
+        // Construct query basic query
+        var query: Query = firestore.collection("restaurants")
+
+        // Category (equality filter)
+        if (filters.hasCategory()) {
+            query = query.whereEqualTo(Restaurant.FIELD_CATEGORY, filters.category)
+        }
+
+        // City (equality filter)
+        if (filters.hasCity()) {
+            query = query.whereEqualTo(Restaurant.FIELD_CITY, filters.city)
+        }
+
+        // Price (equality filter)
+        if (filters.hasPrice()) {
+            query = query.whereEqualTo(Restaurant.FIELD_PRICE, filters.price)
+        }
+
+        // Sort by (orderBy with direction)
+        if (filters.hasSortBy()) {
+            query = query.orderBy(filters.sortBy.toString(), filters.sortDirection)
+        }
+
+        // Limit items
+        query = query.limit(50.toLong())
+
+        // Update the query
+        query.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val restaurants = task.result?.toObjects(Restaurant::class.java)
+                adapter.submitList(restaurants)
+                displayEmptyState(shouldShow = restaurants.isNullOrEmpty())
+            } else {
+                displayEmptyState(shouldShow = true)
+            }
+        }
+
+        // Set header
+        binding.textCurrentSearch.text = HtmlCompat.fromHtml(
+            filters.getSearchDescription(requireContext()),
+            HtmlCompat.FROM_HTML_MODE_LEGACY
+        )
+        binding.textCurrentSortBy.text = filters.getOrderDescription(requireContext())
+
+        // Save filters
+        viewModel.filters = filters
     }
 
     private fun goToRestaurantDetail(restaurantId: String) {
@@ -171,7 +228,7 @@ class MainFragment : Fragment(), MenuProvider, RestaurantsAdapter.OnItemClickLis
     private fun onClearFilterClicked() {
         filterDialog.resetFilters()
 
-        // TODO onFilter(Filters.default)
+        onFilter(Filter.default)
     }
 
     private fun displayEmptyState(shouldShow: Boolean) = with(binding) {
