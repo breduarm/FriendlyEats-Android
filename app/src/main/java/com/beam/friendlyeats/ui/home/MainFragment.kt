@@ -114,19 +114,19 @@ class MainFragment : Fragment(), MenuProvider, RestaurantsAdapter.OnItemClickLis
         goToRestaurantDetail(restaurantId = restaurant.id)
     }
 
-    override fun onFilter(newFilter: Filter) {
+    override fun onFilter(newFilters: Filter) {
         // Set header
         with(binding) {
             textCurrentSearch.text = HtmlCompat.fromHtml(
-                newFilter.getSearchDescription(requireContext()),
+                newFilters.getSearchDescription(requireContext()),
                 HtmlCompat.FROM_HTML_MODE_LEGACY
             )
-            textCurrentSortBy.text = newFilter.getOrderDescription(requireContext())
+            textCurrentSortBy.text = newFilters.getOrderDescription(requireContext())
         }
 
         // Save filter, then filter restaurants
         with(viewModel) {
-            filters = newFilter
+            filters = newFilters
             filterRestaurants()
         }
     }
