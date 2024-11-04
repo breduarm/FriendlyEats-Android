@@ -27,7 +27,7 @@ interface RestaurantDao {
 
     fun addRandomRestaurants(newRestaurants: List<RestaurantCollection>)
 
-    suspend fun getFiltered(filters: Filter): List<RestaurantCollection>
+    suspend fun getFiltered(filters: Filter, limit: Long): List<RestaurantCollection>
 }
 
 class RestaurantDaoFirebaseImpl : RestaurantDao {
@@ -68,13 +68,13 @@ class RestaurantDaoFirebaseImpl : RestaurantDao {
         }
     }
 
-    override suspend fun getFiltered(filters: Filter): List<RestaurantCollection> =
-        filteringQueryBuilder(filters)
+    override suspend fun getFiltered(filters: Filter, limit: Long): List<RestaurantCollection> =
+        filteringQueryBuilder(filters, limit)
             .get()
             .await()
             .toObjects(RestaurantCollection::class.java)
 
-    private fun filteringQueryBuilder(filters: Filter): Query {
+    private fun filteringQueryBuilder(filters: Filter, limit: Long): Query {
         // Construct query basic query
         var query: Query = collection
 
@@ -99,13 +99,8 @@ class RestaurantDaoFirebaseImpl : RestaurantDao {
         }
 
         // Limit items
-        query = query.limit(LIMIT_QUERY)
+        query = query.limit(limit)
 
         return query
-    }
-
-    companion object {
-
-        const val LIMIT_QUERY = 50L
     }
 }

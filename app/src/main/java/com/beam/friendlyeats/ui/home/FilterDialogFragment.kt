@@ -1,6 +1,5 @@
 package com.beam.friendlyeats.ui.home
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,15 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.beam.friendlyeats.R
 import com.beam.friendlyeats.databinding.DialogFilterBinding
-import com.beam.friendlyeats.domain.models.Restaurant
 import com.beam.friendlyeats.domain.models.Filter
+import com.beam.friendlyeats.domain.models.Restaurant
 import com.google.firebase.firestore.Query
 
-class FilterDialogFragment : DialogFragment() {
+class FilterDialogFragment(private val listener: FilterListener) : DialogFragment() {
 
     private var _binding: DialogFilterBinding? = null
     private val binding get() = _binding!!
-    private var filterListener: FilterListener? = null
 
     private val selectedCategory: String?
         get() {
@@ -81,7 +79,7 @@ class FilterDialogFragment : DialogFragment() {
             }
         }
 
-    val filters: Filter
+    private val filters: Filter
         get() {
             val filters = Filter()
 
@@ -117,14 +115,6 @@ class FilterDialogFragment : DialogFragment() {
         _binding = null
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        if (parentFragment is FilterListener) {
-            filterListener = parentFragment as FilterListener
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         dialog?.window?.setLayout(
@@ -134,7 +124,7 @@ class FilterDialogFragment : DialogFragment() {
     }
 
     private fun onSearchClicked() {
-        filterListener?.onFilter(filters)
+        listener.onFilter(filters)
         dismiss()
     }
 

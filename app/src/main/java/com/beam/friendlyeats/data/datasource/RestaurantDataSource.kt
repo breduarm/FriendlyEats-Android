@@ -3,6 +3,7 @@ package com.beam.friendlyeats.data.datasource
 import com.beam.friendlyeats.data.local.firestore.collections.RestaurantCollection
 import com.beam.friendlyeats.data.local.firestore.dao.RestaurantDaoFirebaseImpl
 import com.beam.friendlyeats.data.local.firestore.mappers.toDomain
+import com.beam.friendlyeats.domain.models.Filter
 import com.beam.friendlyeats.domain.models.Restaurant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -19,6 +20,8 @@ interface RestaurantDataSource {
     fun findAllRestaurantsFlow(): Flow<List<Restaurant>>
 
     fun addRandomRestaurants(newRestaurants: List<RestaurantCollection>)
+
+    suspend fun getFilteredRestaurants(filters: Filter, limit: Long): List<Restaurant>
 }
 
 class RestaurantLocalDataSource : RestaurantDataSource {
@@ -42,4 +45,7 @@ class RestaurantLocalDataSource : RestaurantDataSource {
     override fun addRandomRestaurants(newRestaurants: List<RestaurantCollection>) {
         restaurantDao.addRandomRestaurants(newRestaurants)
     }
+
+    override suspend fun getFilteredRestaurants(filters: Filter, limit: Long): List<Restaurant> =
+        restaurantDao.getFiltered(filters, limit).map { it.toDomain() }
 }

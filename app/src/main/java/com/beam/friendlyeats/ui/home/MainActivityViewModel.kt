@@ -42,6 +42,13 @@ class MainActivityViewModel : ViewModel() {
         restaurantRepository.addRandomRestaurants(cities, categories)
     }
 
+    fun filterRestaurants() {
+        viewModelScope.launch {
+            val filteredRestaurants = restaurantRepository.getFilteredRestaurants(filters)
+            _state.value = _state.value.copy(restaurants = filteredRestaurants)
+        }
+    }
+
     data class UiState(
         val restaurants: List<Restaurant> = emptyList(),
     )
