@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.text.HtmlCompat
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -113,9 +114,21 @@ class MainFragment : Fragment(), MenuProvider, RestaurantsAdapter.OnItemClickLis
         goToRestaurantDetail(restaurantId = restaurant.id)
     }
 
-    override fun onFilter(filters: Filter) {
-        viewModel.filters = filters
-        viewModel.filterRestaurants()
+    override fun onFilter(newFilter: Filter) {
+        // Set header
+        with(binding) {
+            textCurrentSearch.text = HtmlCompat.fromHtml(
+                newFilter.getSearchDescription(requireContext()),
+                HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+            textCurrentSortBy.text = newFilter.getOrderDescription(requireContext())
+        }
+
+        // Save filter, then filter restaurants
+        with(viewModel) {
+            filters = newFilter
+            filterRestaurants()
+        }
     }
 
     private fun goToRestaurantDetail(restaurantId: String) {

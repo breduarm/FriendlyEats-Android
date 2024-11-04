@@ -94,7 +94,7 @@ class FilterDialogFragment(private val listener: FilterListener) : DialogFragmen
 
     interface FilterListener {
 
-        fun onFilter(filters: Filter)
+        fun onFilter(newFilters: Filter)
     }
 
     override fun onCreateView(
