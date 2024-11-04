@@ -9,7 +9,7 @@ import androidx.fragment.app.DialogFragment
 import com.beam.friendlyeats.R
 import com.beam.friendlyeats.databinding.DialogFilterBinding
 import com.beam.friendlyeats.domain.models.Restaurant
-import com.beam.friendlyeats.ui.models.Filter
+import com.beam.friendlyeats.domain.models.Filter
 import com.google.firebase.firestore.Query
 
 class FilterDialogFragment : DialogFragment() {

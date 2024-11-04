@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.beam.friendlyeats.data.repositories.RestaurantRepositoryImpl
 import com.beam.friendlyeats.domain.models.Restaurant
-import com.beam.friendlyeats.ui.models.Filter
+import com.beam.friendlyeats.domain.models.Filter
 import com.firebase.ui.auth.AuthUI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

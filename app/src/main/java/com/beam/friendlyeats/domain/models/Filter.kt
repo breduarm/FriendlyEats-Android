@@ -1,9 +1,8 @@
-package com.beam.friendlyeats.ui.models
+package com.beam.friendlyeats.domain.models
 
 import android.content.Context
 import android.text.TextUtils
 import com.beam.friendlyeats.R
-import com.beam.friendlyeats.domain.models.Restaurant
 import com.google.firebase.firestore.Query
 
 class Filter {

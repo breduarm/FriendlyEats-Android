@@ -1,8 +1,11 @@
 package com.beam.friendlyeats.data.local.firestore.dao
 
 import com.beam.friendlyeats.data.local.firestore.collections.RestaurantCollection
+import com.beam.friendlyeats.domain.models.Filter
+import com.beam.friendlyeats.domain.models.Restaurant
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.firestoreSettings
@@ -23,6 +26,8 @@ interface RestaurantDao {
     fun findAllRestaurantsFlow(): Flow<List<RestaurantCollection>>
 
     fun addRandomRestaurants(newRestaurants: List<RestaurantCollection>)
+
+    suspend fun getFiltered(filters: Filter): List<RestaurantCollection>
 }
 
 class RestaurantDaoFirebaseImpl : RestaurantDao {
@@ -61,5 +66,46 @@ class RestaurantDaoFirebaseImpl : RestaurantDao {
         newRestaurants.forEach { newRestaurant ->
             collection.add(newRestaurant)
         }
+    }
+
+    override suspend fun getFiltered(filters: Filter): List<RestaurantCollection> =
+        filteringQueryBuilder(filters)
+            .get()
+            .await()
+            .toObjects(RestaurantCollection::class.java)
+
+    private fun filteringQueryBuilder(filters: Filter): Query {
+        // Construct query basic query
+        var query: Query = collection
+
+        // Category (equality filter)
+        if (filters.hasCategory()) {
+            query = query.whereEqualTo(Restaurant.FIELD_CATEGORY, filters.category)
+        }
+
+        // City (equality filter)
+        if (filters.hasCity()) {
+            query = query.whereEqualTo(Restaurant.FIELD_CITY, filters.city)
+        }
+
+        // Price (equality filter)
+        if (filters.hasPrice()) {
+            query = query.whereEqualTo(Restaurant.FIELD_PRICE, filters.price)
+        }
+
+        // Sort by (orderBy with direction)
+        if (filters.hasSortBy()) {
+            query = query.orderBy(filters.sortBy.toString(), filters.sortDirection)
+        }
+
+        // Limit items
+        query = query.limit(LIMIT_QUERY)
+
+        return query
+    }
+
+    companion object {
+
+        const val LIMIT_QUERY = 50L
     }
 }

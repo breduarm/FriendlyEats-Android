@@ -22,7 +22,7 @@ import androidx.navigation.fragment.findNavController
 import com.beam.friendlyeats.R
 import com.beam.friendlyeats.databinding.FragmentMainBinding
 import com.beam.friendlyeats.domain.models.Restaurant
-import com.beam.friendlyeats.ui.models.Filter
+import com.beam.friendlyeats.domain.models.Filter
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
