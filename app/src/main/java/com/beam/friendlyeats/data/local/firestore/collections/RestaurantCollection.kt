@@ -22,6 +22,9 @@ data class RestaurantCollection(
     companion object {
 
         const val COLLECTION_KEY = "restaurants"
+        const val FIELD_CITY = "city"
+        const val FIELD_CATEGORY = "category"
+        const val FIELD_PRICE = "price"
         private const val RESTAURANT_URL_FMT = "https://storage.googleapis.com/firestorequickstarts.appspot.com/food_%d.png"
         private const val MAX_IMAGE_NUM = 22
 

@@ -15,10 +15,10 @@ class RestaurantRepositoryImpl : RestaurantRepository {
         restaurantsDataSource.getById(restaurantId)
 
     override suspend fun getAllRestaurants(): List<Restaurant> =
-        restaurantsDataSource.findAllRestaurants()
+        restaurantsDataSource.getAllRestaurants()
 
     override fun observeAllRestaurants(): Flow<List<Restaurant>> =
-        restaurantsDataSource.findAllRestaurantsFlow()
+        restaurantsDataSource.getAllRestaurantsFlow()
 
     override fun addRandomRestaurants(cities: Array<String>, categories: Array<String>) {
         val randomRestaurants: MutableList<RestaurantCollection> = mutableListOf()

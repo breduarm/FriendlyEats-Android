@@ -13,11 +13,11 @@ interface RestaurantDataSource {
 
     fun getById(restaurantId: String): Flow<Restaurant?>
 
-    suspend fun findAllRestaurants(): List<Restaurant>
+    suspend fun getAllRestaurants(): List<Restaurant>
 
-    suspend fun findRestaurantsByIds(ids: List<String>): List<Restaurant>
+    suspend fun getRestaurantsByIds(ids: List<String>): List<Restaurant>
 
-    fun findAllRestaurantsFlow(): Flow<List<Restaurant>>
+    fun getAllRestaurantsFlow(): Flow<List<Restaurant>>
 
     fun addRandomRestaurants(newRestaurants: List<RestaurantCollection>)
 
@@ -31,14 +31,14 @@ class RestaurantLocalDataSource : RestaurantDataSource {
     override fun getById(restaurantId: String): Flow<Restaurant> =
         restaurantDao.getById(restaurantId).mapNotNull { it?.toDomain() }
 
-    override suspend fun findAllRestaurants(): List<Restaurant> =
-        restaurantDao.findAllRestaurants().map { it.toDomain() }
+    override suspend fun getAllRestaurants(): List<Restaurant> =
+        restaurantDao.getAllRestaurants().map { it.toDomain() }
 
-    override suspend fun findRestaurantsByIds(ids: List<String>): List<Restaurant> =
-        restaurantDao.findRestaurantsByIds(ids).map { it.toDomain() }
+    override suspend fun getRestaurantsByIds(ids: List<String>): List<Restaurant> =
+        restaurantDao.getRestaurantsByIds(ids).map { it.toDomain() }
 
-    override fun findAllRestaurantsFlow(): Flow<List<Restaurant>> =
-        restaurantDao.findAllRestaurantsFlow().map { list ->
+    override fun getAllRestaurantsFlow(): Flow<List<Restaurant>> =
+        restaurantDao.getAllRestaurantsFlow().map { list ->
             list.map { it.toDomain() }
         }
 

@@ -2,7 +2,6 @@ package com.beam.friendlyeats.data.local.firestore.dao
 
 import com.beam.friendlyeats.data.local.firestore.collections.RestaurantCollection
 import com.beam.friendlyeats.domain.models.Filter
-import com.beam.friendlyeats.domain.models.Restaurant
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -19,11 +18,11 @@ interface RestaurantDao {
 
     fun getById(restaurantId: String): Flow<RestaurantCollection?>
 
-    suspend fun findAllRestaurants(): List<RestaurantCollection>
+    suspend fun getAllRestaurants(): List<RestaurantCollection>
 
-    suspend fun findRestaurantsByIds(ids: List<String>): List<RestaurantCollection>
+    suspend fun getRestaurantsByIds(ids: List<String>): List<RestaurantCollection>
 
-    fun findAllRestaurantsFlow(): Flow<List<RestaurantCollection>>
+    fun getAllRestaurantsFlow(): Flow<List<RestaurantCollection>>
 
     fun addRandomRestaurants(newRestaurants: List<RestaurantCollection>)
 
@@ -48,19 +47,19 @@ class RestaurantDaoFirebaseImpl : RestaurantDao {
     override fun getById(restaurantId: String): Flow<RestaurantCollection?> =
         collection.document(restaurantId).dataObjects()
 
-    override suspend fun findAllRestaurants(): List<RestaurantCollection> = collection
+    override suspend fun getAllRestaurants(): List<RestaurantCollection> = collection
         .get(Source.CACHE)
         .await()
         .toObjects(RestaurantCollection::class.java)
 
-    override suspend fun findRestaurantsByIds(ids: List<String>): List<RestaurantCollection> =
+    override suspend fun getRestaurantsByIds(ids: List<String>): List<RestaurantCollection> =
         collection
             .whereIn(FieldPath.documentId(), ids)
             .get(Source.CACHE)
             .await()
             .toObjects(RestaurantCollection::class.java)
 
-    override fun findAllRestaurantsFlow(): Flow<List<RestaurantCollection>> = collection.dataObjects()
+    override fun getAllRestaurantsFlow(): Flow<List<RestaurantCollection>> = collection.dataObjects()
 
     override fun addRandomRestaurants(newRestaurants: List<RestaurantCollection>) {
         newRestaurants.forEach { newRestaurant ->
@@ -80,17 +79,17 @@ class RestaurantDaoFirebaseImpl : RestaurantDao {
 
         // Category (equality filter)
         if (filters.hasCategory()) {
-            query = query.whereEqualTo(Restaurant.FIELD_CATEGORY, filters.category)
+            query = query.whereEqualTo(RestaurantCollection.FIELD_CATEGORY, filters.category)
         }
 
         // City (equality filter)
         if (filters.hasCity()) {
-            query = query.whereEqualTo(Restaurant.FIELD_CITY, filters.city)
+            query = query.whereEqualTo(RestaurantCollection.FIELD_CITY, filters.city)
         }
 
         // Price (equality filter)
         if (filters.hasPrice()) {
-            query = query.whereEqualTo(Restaurant.FIELD_PRICE, filters.price)
+            query = query.whereEqualTo(RestaurantCollection.FIELD_PRICE, filters.price)
         }
 
         // Sort by (orderBy with direction)

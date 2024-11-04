@@ -16,6 +16,6 @@ class RestaurantsGroupRepositoryImpl : RestaurantsGroupRepository {
         restaurantsGroupDataSource.findAllRestaurantsGroupFlow().map { groups ->
             val firstGroup = groups.firstOrNull()
             val restaurantsIds = firstGroup?.restaurantsIds.orEmpty()
-            restaurantsDataSource.findRestaurantsByIds(restaurantsIds)
+            restaurantsDataSource.getRestaurantsByIds(restaurantsIds)
         }
 }
